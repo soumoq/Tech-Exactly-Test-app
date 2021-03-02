@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.android.volley.AuthFailureError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.testapp.dialog.MyProgressDialog
 import com.example.testapp.model.application.AppLists
 import com.example.testapp.model.application.Apps
 import com.example.testapp.ratrofit.ApplicationService
@@ -44,7 +45,11 @@ class ApplicationViewModel : ViewModel() {
         })
     }*/
 
-    fun createOrder(context: Context) {
+    fun createOrder(context: Context, text: String) {
+        val progressDialog = MyProgressDialog(context);
+        progressDialog.setCancelable(false)
+        progressDialog.show();
+
         val URL = "http://34.206.75.222/mobile-app/api/v1/apps/list"
         val requestQueue = Volley.newRequestQueue(context)
         val stringRequest: StringRequest = object : StringRequest(
@@ -52,6 +57,8 @@ class ApplicationViewModel : ViewModel() {
             com.android.volley.Response.Listener { response ->
                 var json1: JSONObject? = null
                 try {
+                    progressDialog.dismiss()
+
                     json1 = JSONObject(response)
                     val success = json1.getBoolean("success")
                     if (success) {
@@ -61,15 +68,31 @@ class ApplicationViewModel : ViewModel() {
                         val app_list = data.getJSONArray("app_list")
                         for (i in 0 until app_list.length()) {
                             val appListObj = app_list.getJSONObject(i)
-                            appArray.add(
-                                AppLists(
-                                    appListObj.getString("app_id"),
-                                    appListObj.getString("app_name"),
-                                    appListObj.getString("app_icon"),
-                                    appListObj.getString("app_package_name"),
-                                    appListObj.getString("status")
+                            if (text.equals("")) {
+                                appArray.add(
+                                    AppLists(
+                                        appListObj.getString("app_id"),
+                                        appListObj.getString("app_name"),
+                                        appListObj.getString("app_icon"),
+                                        appListObj.getString("app_package_name"),
+                                        appListObj.getString("status")
+                                    )
                                 )
-                            )
+                            } else if (text == appListObj.getString("app_name").toString()
+                                    .toLowerCase()
+                            ) {
+                                appArray.add(
+                                    AppLists(
+                                        appListObj.getString("app_id"),
+                                        appListObj.getString("app_name"),
+                                        appListObj.getString("app_icon"),
+                                        appListObj.getString("app_package_name"),
+                                        appListObj.getString("status")
+                                    )
+                                )
+                            } else {
+                                //Utils.toast(context, "No result found")
+                            }
                             //Log.e("VOLLY", appListObj.getString("app_id"))
                         }
                         appList.value = appArray
@@ -80,6 +103,7 @@ class ApplicationViewModel : ViewModel() {
                     }
                 } catch (e: JSONException) {
                     toast(context, "Some thing went wrong: " + e.message)
+                    progressDialog.dismiss()
                 }
             },
             com.android.volley.Response.ErrorListener { error -> //toast("Some thing went wrong: " + error.getMessage());

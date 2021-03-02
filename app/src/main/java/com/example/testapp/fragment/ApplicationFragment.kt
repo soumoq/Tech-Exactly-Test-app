@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.testapp.R
 import com.example.testapp.adapter.AppAdapter
 import com.example.testapp.viewmodel.ApplicationViewModel
+import kotlinx.android.synthetic.main.fragment_application.*
 import kotlinx.android.synthetic.main.fragment_application.view.*
 
 class ApplicationFragment : Fragment() {
@@ -29,13 +30,24 @@ class ApplicationFragment : Fragment() {
                 appAdapter.updateData(it)
             }
         })
-        applicationViewModel.createOrder(context!!)
+        if (view.search.text.toString().length > 0) {
+            applicationViewModel.createOrder(context!!, view.search.text.toString())
+        } else {
+            applicationViewModel.createOrder(context!!, "")
+        }
+
+        view.searching.setOnClickListener {
+            if (view.search.text.toString().length > 0) {
+                applicationViewModel.createOrder(
+                    context!!,
+                    view.search.text.toString().toLowerCase()
+                )
+            } else {
+                applicationViewModel.createOrder(context!!, "")
+            }
+        }
 
         return view
-    }
-
-    public fun changeStatus(){
-
     }
 
 

@@ -59,6 +59,7 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/connect_back_ground">
 
                     <LinearLayout
