@@ -82,9 +82,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:tooltipText="#ffffff"
-        app:tabIconTint="@color/tab_color"
-        app:tabIndicatorColor="@color/tab_color"
+
+        app:tabIconTint="@color/color"
+        app:tabIndicatorColor="@color/color"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget">
 
 
