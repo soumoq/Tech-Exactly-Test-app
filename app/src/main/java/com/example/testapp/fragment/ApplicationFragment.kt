@@ -34,5 +34,9 @@ class ApplicationFragment : Fragment() {
         return view
     }
 
+    public fun changeStatus(){
+
+    }
+
 
 }

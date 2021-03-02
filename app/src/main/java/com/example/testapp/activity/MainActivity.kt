@@ -1,5 +1,6 @@
 package com.example.testapp.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         val pagerAdapter = PageAdapter(supportFragmentManager, tab_layout.getTabCount())
         view_pager.adapter = pagerAdapter
         tab_layout.setupWithViewPager(view_pager)
+        tab_layout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))
+        tab_layout.setSelectedTabIndicatorColor(Color.parseColor("#ffffff"))
 
     }
 }
